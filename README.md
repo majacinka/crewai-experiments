@@ -8,15 +8,15 @@ For my experiments with CrewAI, I decided to try 3 different projects, starting 
 3. Build AI newsletter with Reddit Scraper 
 4. Email classifier [WIP]
 
-#### For my experiements I've tried following LLMs:
+## For my experiements I've tried following LLMs:
 ---
 
-##### Available through API calls:
+### Available through API calls:
 
 1. OpenAI -> GPT-4 
 2. Gemini Pro 
 
-##### Local Models through Ollama + rating of how they performed:
+### Local Models through Ollama + rating of how they performed:
 
 1. **Mistral 7B** 
 - Nice, coherent results
