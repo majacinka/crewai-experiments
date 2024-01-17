@@ -3,19 +3,21 @@ import time
 import os
 
 from langchain.tools import tool
-from langchain.tools import tool
-from langchain.agents import load_tools
 from langchain.llms import Ollama
 from crewai import Agent, Task, Process, Crew
 
-# To Load Local models through Ollama
-mistral = Ollama(model="mistral")
+
+from langchain.agents import load_tools
 
 # To load Human in the loop
 human_tools = load_tools(["human"])
 
 # To Load GPT-4
 api = os.environ.get("OPENAI_API_KEY")
+
+
+# To Load Local models through Ollama
+mistral = Ollama(model="mistral")
 
 
 class BrowserTool:
@@ -67,7 +69,7 @@ explorer = Agent(
     """,
     verbose=True,
     allow_delegation=False,
-    tools=[BrowserTool().scrape_reddit],
+    tools=[BrowserTool().scrape_reddit] + human_tools,
     llm=mistral,  # remove to use default gpt-4
 )
 
@@ -107,16 +109,31 @@ task_blog = Task(
     the report on latest ai tools found on localLLama subreddit. Style and tone should be compelling and concise, fun, technical but also use 
     layman words for the general public. Name specific new, exciting projects, apps and companies in AI world. Don't 
     write "**Paragraph [number of the paragraph]:**", instead start the new paragraph in a new line. Write names of projects and tools in BOLD.
-    ALWAYS include links to projects/tools/research papers.
+    ALWAYS include links to projects/tools/research papers. ONLY include information from LocalLLAma.
+    For your Outputs use the following markdown format:
+    ```
+    ## [Title of post](link to project)
+    - Interesting facts
+    - Own thoughts on how it connects to the overall theme of the newsletter
+    ## [Title of second post](link to project)
+    - Interesting facts
+    - Own thoughts on how it connects to the overall theme of the newsletter
+    ```
     """,
     agent=writer,
 )
 
 task_critique = Task(
-    description="""Identify parts of the blog that aren't written concise enough and rewrite and change them. Make sure that the blog has engaging 
-    headline with 30 characters max, and that there are at least 10 paragraphs. Blog needs to be rewritten in such a way that it contains specific 
-    names of models/companies/projects but also explanation of WHY a reader should be interested to research more. Always include links to each paper/
-    project/company
+    description="""The Output MUST have the following markdown format:
+    ```
+    ## [Title of post](link to project)
+    - Interesting facts
+    - Own thoughts on how it connects to the overall theme of the newsletter
+    ## [Title of second post](link to project)
+    - Interesting facts
+    - Own thoughts on how it connects to the overall theme of the newsletter
+    ```
+    Make sure that it does and if it doesn't, rewrite it accordingly.
     """,
     agent=critic,
 )
