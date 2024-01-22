@@ -8,7 +8,7 @@ For my experiments with CrewAI, I decided to try 3 different projects, starting 
 3. Build AI newsletter with Reddit Scraper 
 4. Email classifier [WIP]
 
-## For my experiements I've tried following LLMs:
+## For my experiments I've tried following LLMs:
 ---
 
 ### Available through API calls:
